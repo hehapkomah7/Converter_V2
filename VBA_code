@@ -1,0 +1,108 @@
+Sub CreateDir(strPath As String)
+    Dim elm As Variant
+    Dim strCheckPath As String
+
+    strCheckPath = ""
+    For Each elm In Split(strPath, "\")
+        strCheckPath = strCheckPath & elm & "\"
+        If Len(Dir(strCheckPath, vbDirectory)) = 0 Then MkDir strCheckPath
+    Next
+End Sub
+
+
+Sub ConvertToCSV2024()
+
+     Dim WS As Worksheet
+     Dim FolderPath As String
+     Dim FileName As String
+     Dim TempWB As Workbook
+
+     Set WS = ActiveWorkbook.Worksheets("2024")
+     WS.UsedRange.Copy
+     
+     Set TempWB = Application.Workbooks.Add(1)
+     With TempWB.Sheets(1).Range("A1")
+      .PasteSpecial xlPasteValues
+      .PasteSpecial xlPasteFormats
+     End With
+     
+     FolderPath = "C:\Users\admin\Desktop\Diploma\Converter_csv_to_xml\2024"
+     FileName = "Converted_Data_net_2024"
+     MyFileName = FolderPath & "\" & FileName & ".csv"
+     CreateDir FolderPath
+     
+     Application.DisplayAlerts = False
+     TempWB.SaveAs FileName:=MyFileName, FileFormat:=xlCSV, CreateBackup:=False, Local:=False
+     TempWB.Close SaveChanges:=False
+     Application.DisplayAlerts = True
+     
+End Sub
+
+Sub ConvertToCSV2035()
+
+     Dim WS As Worksheet
+     Dim FolderPath As String
+     Dim FileName As String
+     Dim TempWB As Workbook
+
+     Set WS = ActiveWorkbook.Worksheets("2035")
+     WS.UsedRange.Copy
+     
+     Set TempWB = Application.Workbooks.Add(1)
+     With TempWB.Sheets(1).Range("A1")
+      .PasteSpecial xlPasteValues
+      .PasteSpecial xlPasteFormats
+     End With
+     
+     FolderPath = "C:\Users\admin\Desktop\Diploma\Converter_csv_to_xml\2035"
+     FileName = "Converted_Data_net_2035"
+     MyFileName = FolderPath & "\" & FileName & ".csv"
+     CreateDir FolderPath
+     
+     Application.DisplayAlerts = False
+     TempWB.SaveAs FileName:=MyFileName, FileFormat:=xlCSV, CreateBackup:=False, Local:=False
+     TempWB.Close SaveChanges:=False
+     Application.DisplayAlerts = True
+     
+End Sub
+
+Public Sub StartExeWithArgument2024()
+    Dim strProgramName As String
+    Dim strInputFile As String
+    Dim strOutputFile As String
+    Dim strDelimeter As String
+    Dim strAdditionalNumber As String
+
+    strProgramName = "C:\Users\admin\Desktop\Diploma\Converter_csv_to_xml\Converter\ConsoleApp2\bin\Release\net5.0\ConsoleApp2.exe"
+    strInputFile = "'C:\Users\admin\Desktop\Diploma\Converter_csv_to_xml\2024\Converted_Data_net_2024.csv'"
+    strOutputFile = "'C:\Users\admin\Desktop\Diploma\Converter_csv_to_xml\2024\net.xml'"
+    strDelimeter = "','"
+    strAdditionalNumber = "'0.00001'"
+
+    Call Shell("powershell.exe """ & strProgramName & """ """ & strInputFile & """ """ & strOutputFile & """ """ & strDelimeter & """ """ & strAdditionalNumber & """", vbNormalFocus)
+End Sub
+
+Public Sub StartExeWithArgument2035()
+    Dim strProgramName As String
+    Dim strInputFile As String
+    Dim strOutputFile As String
+    Dim strDelimeter As String
+    Dim strAdditionalNumber As String
+
+    strProgramName = "C:\Users\admin\Desktop\Diploma\Converter_csv_to_xml\Converter\ConsoleApp2\bin\Release\net5.0\ConsoleApp2.exe"
+    strInputFile = "C:\Users\admin\Desktop\Diploma\Converter_csv_to_xml\2035\Converted_Data_net_2035.csv"
+    strOutputFile = "C:\Users\admin\Desktop\Diploma\Converter_csv_to_xml\2035\net.xml"
+    strDelimeter = ","
+    strAdditionalNumber = "0.00001"
+
+    Call Shell("""" & strProgramName & """ """ & strInputFile & """ """ & strOutputFile & """ """ & strDelimeter & """ """ & strAdditionalNumber & """", vbNormalFocus)
+End Sub
+
+Sub Run()
+
+    Call ConvertToCSV2024
+    Call ConvertToCSV2035
+    Call StartExeWithArgument2024
+    Call StartExeWithArgument2035
+
+End Sub
